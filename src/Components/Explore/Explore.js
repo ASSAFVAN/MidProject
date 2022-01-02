@@ -5,6 +5,7 @@ export default function Homepage() {
   const [specieses, setSpecieses] = useState([]);
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [observations, setObservations] = useState([]);
 
   useEffect(() => {
     const loadSpecies = async () => {
@@ -22,8 +23,6 @@ export default function Homepage() {
     let matches = [];
     if (text.length > 4) {
       matches = specieses.filter((species) => {
-        // const regex = new RegExp(`${text}`, "gi");
-        // return species.comName.match(regex);
         return species.comName.toLowerCase().includes(text);
       });
     }
@@ -31,21 +30,76 @@ export default function Homepage() {
     setText(text);
   };
 
+  const findSpeciesCode = (text) => {
+    const result = specieses.find((item) => {
+      return item.comName === text.text;
+    });
+    handleSearchClick(result.speciesCode);
+  };
+
+  const handleSearchClick = async (code) => {
+    const response = await axios.get(
+      `https://api.ebird.org/v2/data/obs/IL/recent/${code}`,
+      {
+        headers: {
+          "X-eBirdApiToken": "gqrh0a9j82ma",
+        },
+        params: {
+          maxResults: 20,
+        },
+      }
+    );
+    console.log(response.data);
+
+    setObservations(response.data);
+  };
+
+  const renderObsHeader = () => {
+    let headerElement = [
+      "Location",
+      "Date",
+      "Time",
+      "Quantity",
+      "Latitude",
+      "Longitude",
+    ];
+
+    return headerElement.map((key, index) => {
+      return <th key={index}>{key.toUpperCase()}</th>;
+    });
+  };
+
+  const renderObs = () => {
+    return (
+      observations &&
+      observations.map(({ subId, locName, obsDt, lat, lng, howMany }) => {
+        return (
+          <Fragment>
+            <tr key={subId}>
+              <td>{locName}</td>
+              <td>{obsDt.slice(0, -6)}</td>
+              <td>{obsDt.substr(obsDt.length - 5)}</td>
+              <td>{howMany}</td>
+              <td>{lat}</td>
+              <td>{lng}</td>
+            </tr>
+          </Fragment>
+        );
+      })
+    );
+  };
+
   return (
     <Fragment>
-      {/* // {suggestions &&
-            //   suggestions.map((suggestion) => {
-            //     return <div key={suggestion.speciesCode}>{suggestion.comName}</div>; */}
-
       <form action="/action_page.php">
         <input
-          list="assaf"
+          list="list"
           type="text"
           placeholder="Search for a spieces"
           onChange={(event) => onChangeHandler(event.target.value)}
           value={text}
         />
-        <datalist id="assaf" name="spicies">
+        <datalist id="list" name="spicies">
           {suggestions &&
             suggestions.map((suggestion) => {
               return (
@@ -56,6 +110,14 @@ export default function Homepage() {
             })}
         </datalist>
       </form>
+      <button onClick={() => findSpeciesCode({ text })}>Search</button>
+      <h3>{text}</h3>
+      <table>
+        <thead>
+          <tr>{renderObsHeader()}</tr>
+        </thead>
+        <tbody>{renderObs()}</tbody>
+      </table>
     </Fragment>
   );
 }
