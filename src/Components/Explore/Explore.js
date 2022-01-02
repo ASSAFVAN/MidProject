@@ -20,7 +20,7 @@ export default function Homepage() {
 
   const onChangeHandler = (text) => {
     let matches = [];
-    if (text.length > 0) {
+    if (text.length > 4) {
       matches = specieses.filter((species) => {
         // const regex = new RegExp(`${text}`, "gi");
         // return species.comName.match(regex);
@@ -32,7 +32,7 @@ export default function Homepage() {
   };
 
   return (
-    <div>
+    <Fragment>
       {/* // {suggestions &&
             //   suggestions.map((suggestion) => {
             //     return <div key={suggestion.speciesCode}>{suggestion.comName}</div>; */}
@@ -56,6 +56,6 @@ export default function Homepage() {
             })}
         </datalist>
       </form>
-    </div>
+    </Fragment>
   );
 }
