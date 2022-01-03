@@ -1,0 +1,27 @@
+:root {
+  --primary-color: #4caf50;
+}
+.spinner {
+  border-radius: 50%;
+  border: 3px, solid transparent;
+  border-top: 3px solid var(--primary-color);
+  border-bottom: 3px solid rgba (255, 255, 255, 0);
+  border-left: 3px solid rgba (255, 255, 255, 0);
+  border-right: 3px solid transparent;
+
+  width: 50px;
+  height: 50px;
+
+  animation-name: spinner;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-direction: reverse;
+  animation-timing-function: linear;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(360deg);
+  }
+}

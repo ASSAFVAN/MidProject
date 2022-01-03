@@ -1,20 +1,27 @@
 import React, { useState, useEffect, Fragment } from "react";
-import axios from "axios";
+import "./Explore.css";
+import Spinner from "../Spinner/Spinner";
+import eBirdData from "../../APIs/eBirdData";
+import eBirdTaxonomy from "../../APIs/eBirdTaxonomy";
 
 export default function Homepage() {
   const [specieses, setSpecieses] = useState([]);
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [observations, setObservations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadSpecies = async () => {
-      const response = await axios.get(
-        "https://api.ebird.org/v2/ref/taxonomy/ebird",
-        { params: { fmt: "json" } }
-      );
-      console.log(response.data);
-      setSpecieses(response.data);
+      setIsLoading(true);
+      try {
+        const response = await eBirdTaxonomy.get();
+        console.log(response.data);
+        setSpecieses(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
     };
     loadSpecies();
   }, []);
@@ -38,20 +45,16 @@ export default function Homepage() {
   };
 
   const handleSearchClick = async (code) => {
-    const response = await axios.get(
-      `https://api.ebird.org/v2/data/obs/IL/recent/${code}`,
-      {
-        headers: {
-          "X-eBirdApiToken": "gqrh0a9j82ma",
-        },
-        params: {
-          maxResults: 20,
-        },
-      }
-    );
-    console.log(response.data);
+    setIsLoading(true);
+    try {
+      const response = await eBirdData.get(`/obs/IL/recent/${code}`);
+      console.log(response.data);
 
-    setObservations(response.data);
+      setObservations(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
 
   const renderObsHeader = () => {
@@ -72,33 +75,42 @@ export default function Homepage() {
   const renderObs = () => {
     return (
       observations &&
-      observations.map(({ subId, locName, obsDt, lat, lng, howMany }) => {
-        return (
-          <Fragment>
-            <tr key={subId}>
-              <td>{locName}</td>
-              <td>{obsDt.slice(0, -6)}</td>
-              <td>{obsDt.substr(obsDt.length - 5)}</td>
-              <td>{howMany}</td>
-              <td>{lat}</td>
-              <td>{lng}</td>
-            </tr>
-          </Fragment>
-        );
-      })
+      observations.map(
+        ({ subId, locName, obsDt, lat, lng, howMany }, index) => {
+          return (
+            <Fragment>
+              <tr key={index}>
+                <td>{locName}</td>
+                <td>{obsDt.slice(0, -6)}</td>
+                <td>{obsDt.substr(obsDt.length - 5)}</td>
+                <td>{howMany}</td>
+                <td>{lat}</td>
+                <td>{lng}</td>
+              </tr>
+            </Fragment>
+          );
+        }
+      )
     );
   };
 
   return (
-    <Fragment>
+    <div className="main-content-wrapper">
       <form action="/action_page.php">
-        <input
-          list="list"
-          type="text"
-          placeholder="Search for a spieces"
-          onChange={(event) => onChangeHandler(event.target.value)}
-          value={text}
-        />
+        <div className="input-wrapper">
+          <input
+            list="list"
+            type="text"
+            placeholder="Search for a spieces"
+            onChange={(event) => onChangeHandler(event.target.value)}
+            value={text}
+          />
+          <i
+            role="button"
+            onClick={() => findSpeciesCode({ text })}
+            className="fas fa-search input-icon"
+          ></i>
+        </div>
         <datalist id="list" name="spicies">
           {suggestions &&
             suggestions.map((suggestion) => {
@@ -110,14 +122,14 @@ export default function Homepage() {
             })}
         </datalist>
       </form>
-      <button onClick={() => findSpeciesCode({ text })}>Search</button>
-      <h3>{text}</h3>
-      <table>
+      {/* <button onClick={() => findSpeciesCode({ text })}>Search</button> */}
+      {isLoading && <Spinner />}
+      <table className="obs-table">
         <thead>
           <tr>{renderObsHeader()}</tr>
         </thead>
         <tbody>{renderObs()}</tbody>
       </table>
-    </Fragment>
+    </div>
   );
 }

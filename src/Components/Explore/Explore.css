@@ -1,0 +1,51 @@
+.main-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+input {
+  width: 35vw;
+  height: 6vh;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 0.6rem;
+  font-size: 1.5rem;
+  color: lightgrey;
+  cursor: pointer;
+}
+
+.obs-table {
+  margin-top: 2rem;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+}
+
+.obs-table td,
+.obs-table th {
+  border: 1px solid #ddd;
+  padding: 0.7rem;
+}
+
+.obs-table th {
+  padding: 10px;
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+}
