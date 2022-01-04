@@ -77,14 +77,7 @@ export default function Homepage() {
   };
 
   const renderObsHeader = () => {
-    const headerElement = [
-      "Location",
-      "Date",
-      "Time",
-      "Quantity",
-      // "Latitude",
-      // "Longitude",
-    ];
+    const headerElement = ["Location", "Date", "Time", "Quantity"];
 
     return headerElement.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
@@ -102,8 +95,6 @@ export default function Homepage() {
               <td>{obsDt.slice(0, -6)}</td>
               <td>{obsDt.substr(obsDt.length - 5)}</td>
               <td>{howMany}</td>
-              {/* <td>{lat}</td>
-              <td>{lng}</td> */}
             </tr>
           </Fragment>
         );
@@ -113,9 +104,10 @@ export default function Homepage() {
 
   return (
     <div className="main-content-wrapper">
-      <form action="/action_page.php">
+      <form className="explore-form" action="/action_page.php">
         <div className="input-wrapper">
           <input
+            className="input-search"
             list="list"
             type="text"
             placeholder="Search for a spieces"

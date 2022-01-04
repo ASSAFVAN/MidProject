@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 
-form {
+.input-search {
   display: flex;
   justify-content: center;
   margin-top: 10vh;
@@ -20,13 +20,13 @@ form {
   position: relative;
 }
 
-input {
+.input-search {
   width: 35vw;
   height: 6vh;
   border-radius: 0.5rem;
   font-size: 1.3rem;
 }
-input:focus {
+.input-search:focus {
   border: 1px solid #4caf50;
   box-shadow: none;
 }

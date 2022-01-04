@@ -15,8 +15,8 @@ export default function Map({ obs }) {
       />
       {obs.map((location, index) => {
         return (
-          <div>
-            <Marker key={index} position={[location.lat, location.lng]}>
+          <div key={index}>
+            <Marker position={[location.lat, location.lng]}>
               <Tooltip>{location.locName}</Tooltip>
             </Marker>
           </div>
