@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import "./AddObservation.css";
 

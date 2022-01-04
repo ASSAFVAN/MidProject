@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import myObsAPI from "../../APIs/myObsAPI";
 // import AddObservation from "../AddObservation/AddObservation";
@@ -12,6 +12,8 @@ export default function MyObs() {
   useEffect(() => {
     const loadObservations = async () => {
       setIsLoading(true);
+      console.log(isLoading);
+
       try {
         const response = await myObsAPI.get();
         console.log(response.data);

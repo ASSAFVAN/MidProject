@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "./Map.css";
 
