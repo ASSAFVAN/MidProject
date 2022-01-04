@@ -7,12 +7,11 @@ import "./MyObs.css";
 
 export default function MyObs() {
   const [myObservation, setMyObservation] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadObservations = async () => {
-      setIsLoading(true);
-      console.log(isLoading);
+      // setIsLoading(true);
 
       try {
         const response = await myObsAPI.get();
@@ -21,7 +20,7 @@ export default function MyObs() {
       } catch (error) {
         console.log(error);
       }
-      setIsLoading(false);
+      // setIsLoading(false);
     };
     loadObservations();
   }, []);
