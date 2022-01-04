@@ -12,9 +12,9 @@ export default function Header() {
       <div className="navbar--left">
         <Link to="/">Homepage</Link>
         <Link to="/explore">Explore</Link>
-        <Link to="/myobs">My Observation</Link>
+        <Link to="/myobs">My Observations</Link>
       </div>
-      <Logout />
+      {/* <Logout /> */}
       {/* {isLoggedIn && <Logout />} */}
     </nav>
   );

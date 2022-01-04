@@ -1,4 +1,6 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
+import axios from "axios";
+import Map from "../Map/Map";
 import "./Explore.css";
 import Spinner from "../Spinner/Spinner";
 import eBirdData from "../../APIs/eBirdData";
@@ -9,13 +11,24 @@ export default function Homepage() {
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [observations, setObservations] = useState([]);
+  const [showmsg, setshowmsg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    const source = axios.CancelToken.source();
     const loadSpecies = async () => {
       setIsLoading(true);
       try {
-        const response = await eBirdTaxonomy.get();
+        const response = await eBirdTaxonomy.get("/ebird", {
+          cancelToken: source.token,
+        });
         console.log(response.data);
         setSpecieses(response.data);
       } catch (error) {
@@ -24,6 +37,9 @@ export default function Homepage() {
       setIsLoading(false);
     };
     loadSpecies();
+    return () => {
+      source.cancel();
+    };
   }, []);
 
   const onChangeHandler = (text) => {
@@ -41,6 +57,11 @@ export default function Homepage() {
     const result = specieses.find((item) => {
       return item.comName === text.text;
     });
+    if (text.text === "") {
+      setshowmsg(true);
+    } else {
+      setshowmsg(false);
+    }
     handleSearchClick(result.speciesCode);
   };
 
@@ -48,8 +69,6 @@ export default function Homepage() {
     setIsLoading(true);
     try {
       const response = await eBirdData.get(`/obs/IL/recent/${code}`);
-      console.log(response.data);
-
       setObservations(response.data);
     } catch (error) {
       console.log(error);
@@ -58,13 +77,13 @@ export default function Homepage() {
   };
 
   const renderObsHeader = () => {
-    let headerElement = [
+    const headerElement = [
       "Location",
       "Date",
       "Time",
       "Quantity",
-      "Latitude",
-      "Longitude",
+      // "Latitude",
+      // "Longitude",
     ];
 
     return headerElement.map((key, index) => {
@@ -75,22 +94,20 @@ export default function Homepage() {
   const renderObs = () => {
     return (
       observations &&
-      observations.map(
-        ({ subId, locName, obsDt, lat, lng, howMany }, index) => {
-          return (
-            <Fragment>
-              <tr key={index}>
-                <td>{locName}</td>
-                <td>{obsDt.slice(0, -6)}</td>
-                <td>{obsDt.substr(obsDt.length - 5)}</td>
-                <td>{howMany}</td>
-                <td>{lat}</td>
-                <td>{lng}</td>
-              </tr>
-            </Fragment>
-          );
-        }
-      )
+      observations.map(({ locName, obsDt, lat, lng, howMany }, index) => {
+        return (
+          <Fragment key={index}>
+            <tr>
+              <td>{locName}</td>
+              <td>{obsDt.slice(0, -6)}</td>
+              <td>{obsDt.substr(obsDt.length - 5)}</td>
+              <td>{howMany}</td>
+              {/* <td>{lat}</td>
+              <td>{lng}</td> */}
+            </tr>
+          </Fragment>
+        );
+      })
     );
   };
 
@@ -104,6 +121,7 @@ export default function Homepage() {
             placeholder="Search for a spieces"
             onChange={(event) => onChangeHandler(event.target.value)}
             value={text}
+            ref={inputRef}
           />
           <i
             role="button"
@@ -122,14 +140,19 @@ export default function Homepage() {
             })}
         </datalist>
       </form>
-      {/* <button onClick={() => findSpeciesCode({ text })}>Search</button> */}
       {isLoading && <Spinner />}
-      <table className="obs-table">
-        <thead>
-          <tr>{renderObsHeader()}</tr>
-        </thead>
-        <tbody>{renderObs()}</tbody>
-      </table>
+      {showmsg && <div>No results</div>}
+      <div className="central-content">
+        {observations.length > 0 && (
+          <table className="obs-table">
+            <thead>
+              <tr>{renderObsHeader()}</tr>
+            </thead>
+            <tbody>{renderObs()}</tbody>
+          </table>
+        )}
+        <Map obs={observations} />
+      </div>
     </div>
   );
 }

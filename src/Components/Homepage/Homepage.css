@@ -1,0 +1,14 @@
+.homepage-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  /* background-color: #ff4e00;
+  background-image: linear-gradient(180deg, #ff4e00 0%, #ec9f05 74%); */
+  width: 100vw;
+  height: 100vh;
+}
+
+.homepage-about {
+  margin-top: 30vh;
+  font-size: 4rem;
+}
