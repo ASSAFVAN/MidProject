@@ -53,6 +53,8 @@ export default function Homepage() {
     setText(text);
   };
 
+  const noResultsMsg = () => {};
+
   const findSpeciesCode = (text) => {
     const result = specieses.find((item) => {
       return item.comName === text.text;
@@ -70,6 +72,11 @@ export default function Homepage() {
     try {
       const response = await eBirdData.get(`/obs/IL/recent/${code}`);
       setObservations(response.data);
+      if (observations.length > 0) {
+        setshowmsg(true);
+      } else {
+        setshowmsg(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +150,7 @@ export default function Homepage() {
             <tbody>{renderObs()}</tbody>
           </table>
         )}
-        <Map obs={observations} />
+        {observations.length > 0 && <Map obs={observations} />}
       </div>
     </div>
   );
