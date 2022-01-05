@@ -1,4 +1,15 @@
-.addObservation-link {
-  margin-top: 20vh;
+.myObs-container {
   display: flex;
+  flex-direction: column;
+  margin-top: 20vh;
+}
+
+.addObservation-link {
+  text-decoration: none;
+  background-color: #0096ff;
+  color: white;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }

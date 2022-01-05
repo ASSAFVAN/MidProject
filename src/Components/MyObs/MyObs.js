@@ -38,10 +38,12 @@ export default function MyObs() {
   };
 
   return (
-    <div>
-      <Link className="addObservation-link" to="/myobs/addObservation">
-        Add New Observation
-      </Link>
+    <div className="myObs-container">
+      <div>
+        <Link className="addObservation-link" to="/myobs/addObservation">
+          Add New Observation
+        </Link>
+      </div>
       <MyObsTable obs={myObservation} deleteObs={deleteObs} editObs={editObs} />
     </div>
   );

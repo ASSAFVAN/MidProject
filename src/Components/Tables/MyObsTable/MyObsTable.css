@@ -1,5 +1,5 @@
 .my-obs-table {
-  /* margin-top: 2rem; */
+  margin-top: 5vh;
   border-collapse: collapse;
   border: 3px solid #ddd;
 }
@@ -15,4 +15,17 @@
   text-align: center;
   background-color: #4caf50;
   color: white;
+}
+
+.action-btn {
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  margin: 0 0.3rem;
+}
+
+.action-btn:hover {
+  background-color: #4caf50;
 }

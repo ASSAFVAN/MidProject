@@ -44,7 +44,7 @@ export default function Homepage() {
 
   const onChangeHandler = (text) => {
     let matches = [];
-    if (text.length > 4) {
+    if (text.length > 5) {
       matches = specieses.filter((species) => {
         return species.comName.toLowerCase().includes(text);
       });

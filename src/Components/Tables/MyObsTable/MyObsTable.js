@@ -41,8 +41,16 @@ const MyObsTable = (props) => {
                 <td>{lat}</td>
                 <td>{lng}</td>
                 <td>
-                  <button onClick={() => props.deleteObs(id)}>Delete</button>
-                  <button onClick={() => props.editObs(id, observation)}>
+                  <button
+                    className="action-btn"
+                    onClick={() => props.deleteObs(id)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="action-btn"
+                    onClick={() => props.editObs(id, observation)}
+                  >
                     Edit
                   </button>
                 </td>
