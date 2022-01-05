@@ -38,6 +38,7 @@ export default function MyObs() {
 
   return (
     <div className="myObs-container">
+      <h1>My Observations</h1>
       <div className="myObs-data">
         <Link className="addObservation-link" to="/myobs/addObservation">
           Add New Observation

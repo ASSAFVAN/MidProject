@@ -11,7 +11,7 @@ export default function Homepage() {
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [observations, setObservations] = useState([]);
-  const [showmsg, setshowmsg] = useState(false);
+  const [showmsg, setShowMsg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
 
@@ -49,6 +49,7 @@ export default function Homepage() {
         return species.comName.toLowerCase().includes(text);
       });
     }
+    setShowMsg(false);
     setSuggestions(matches);
     setText(text);
   };
@@ -58,11 +59,11 @@ export default function Homepage() {
       return item.comName === text.text;
     });
     if (text.text === "") {
-      setshowmsg(true);
+      setShowMsg(true);
     } else {
-      setshowmsg(false);
+      setShowMsg(false);
+      handleSearchClick(result.speciesCode);
     }
-    handleSearchClick(result.speciesCode);
   };
 
   const handleSearchClick = async (code) => {
@@ -70,11 +71,11 @@ export default function Homepage() {
     try {
       const response = await eBirdData.get(`/obs/IL/recent/${code}`);
       setObservations(response.data);
-      if (observations.length > 0) {
-        setshowmsg(true);
-      } else {
-        setshowmsg(false);
-      }
+      // if (observations.length > 0) {
+      //   setShowMsg(false);
+      // } else {
+      //   setShowMsg(true);
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -109,6 +110,7 @@ export default function Homepage() {
 
   return (
     <div className="main-content-wrapper">
+      <h1>Explore Species</h1>
       <form className="explore-form" action="/action_page.php">
         <div className="input-wrapper">
           <input

@@ -86,10 +86,10 @@ export default function AddObservation() {
       myObservations.lng
     ) {
       await myObsAPI.post("/", myObservations);
+      resetForm();
     } else {
       setshowmsg(true);
     }
-    resetForm();
   };
 
   //Reset Form

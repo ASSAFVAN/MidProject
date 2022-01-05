@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  margin-top: 10vh;
 }
 
 .central-content {
@@ -11,14 +11,14 @@
   justify-content: space-between;
 }
 
+.input-wrapper {
+  position: relative;
+  margin-top: 3vh;
+}
+
 .input-search {
   display: flex;
   justify-content: center;
-  margin-top: 10vh;
-}
-
-.input-wrapper {
-  position: relative;
 }
 
 .input-search {
@@ -45,6 +45,7 @@
   margin-top: 2rem;
   border-collapse: collapse;
   border: 3px solid #ddd;
+  height: fit-content;
 }
 
 .obs-table td,
