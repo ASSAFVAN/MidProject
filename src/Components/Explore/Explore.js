@@ -53,8 +53,6 @@ export default function Homepage() {
     setText(text);
   };
 
-  const noResultsMsg = () => {};
-
   const findSpeciesCode = (text) => {
     const result = specieses.find((item) => {
       return item.comName === text.text;

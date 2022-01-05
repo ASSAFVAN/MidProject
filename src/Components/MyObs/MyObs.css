@@ -1,7 +1,12 @@
 .myObs-container {
   display: flex;
   flex-direction: column;
-  margin-top: 20vh;
+  margin-top: 10vh;
+}
+
+.myObs-data {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .addObservation-link {

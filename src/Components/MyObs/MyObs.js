@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import myObsAPI from "../../APIs/myObsAPI";
-// import AddObservation from "../AddObservation/AddObservation";
 import MyObsTable from "../Tables/MyObsTable/MyObsTable";
+import Spinner from "../Spinner/Spinner";
 import "./MyObs.css";
 
 export default function MyObs() {
   const [myObservation, setMyObservation] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const loadObservations = async () => {
-      // setIsLoading(true);
-
+      setIsLoading(true);
       try {
         const response = await myObsAPI.get();
         console.log(response.data);
@@ -20,7 +19,7 @@ export default function MyObs() {
       } catch (error) {
         console.log(error);
       }
-      // setIsLoading(false);
+      setIsLoading(false);
     };
     loadObservations();
   }, []);
@@ -39,10 +38,11 @@ export default function MyObs() {
 
   return (
     <div className="myObs-container">
-      <div>
+      <div className="myObs-data">
         <Link className="addObservation-link" to="/myobs/addObservation">
           Add New Observation
         </Link>
+        {isLoading && <Spinner />}
       </div>
       <MyObsTable obs={myObservation} deleteObs={deleteObs} editObs={editObs} />
     </div>
