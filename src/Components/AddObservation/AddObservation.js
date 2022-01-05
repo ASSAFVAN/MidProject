@@ -23,7 +23,9 @@ export default function AddObservation() {
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [myObservations, setMyObservations] = useState(initObservation);
+  const [showmsg, setshowmsg] = useState(false);
   const inputRef = useRef(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -61,26 +63,40 @@ export default function AddObservation() {
     }
     setSuggestions(matches);
     setText(text);
+    setshowmsg(false);
     setMyObservations({ ...myObservations, speciesName: text });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    setshowmsg(false);
     setMyObservations({ ...myObservations, [name]: value });
-    console.log(myObservations);
   };
 
   // Adding data to API on submit button
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await myObsAPI.post("/", myObservations);
+    if (
+      myObservations.speciesName &&
+      myObservations.location &&
+      myObservations.howMany &&
+      myObservations.date &&
+      myObservations.time &&
+      myObservations.lat &&
+      myObservations.lng
+    ) {
+      await myObsAPI.post("/", myObservations);
+    } else {
+      setshowmsg(true);
+    }
     resetForm();
   };
 
   //Reset Form
   const resetForm = () => {
+    formRef.current.reset();
     setText("");
-    setMyObservations(initObservation);
+    setMyObservations({ location: "" });
   };
 
   //Go back button
@@ -88,10 +104,11 @@ export default function AddObservation() {
   function handleClick() {
     history.goBack();
   }
+
   return (
     <Fragment>
       <div className="add-observation-container">
-        <form>
+        <form ref={formRef}>
           <h3>Add your new observation</h3>
           <div>
             <input
@@ -134,7 +151,7 @@ export default function AddObservation() {
             <input
               className="add-observation--input"
               type="number"
-              min="0"
+              min="1"
               placeholder="How Many"
               name="howMany"
               onChange={handleChange}
@@ -195,6 +212,7 @@ export default function AddObservation() {
           <button className="go-back-btn" onClick={handleClick}>
             Back
           </button>
+          {showmsg && <div>All fields are required</div>}
           <button className="reset-btn" onClick={resetForm}>
             Clear
           </button>
